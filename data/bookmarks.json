@@ -1,0 +1,22 @@
+{
+    "bookmarks": [
+        {
+            "id": 1,
+            "name": "name",
+            "link": "www.kent.edu",
+            "category": "test"
+        },
+        {
+            "id": 2,
+            "name": "name 2",
+            "link": "www.reddit.com",
+            "category": "test 2"
+        },
+        {
+            "id": 3,
+            "name": "name 3",
+            "link": "www.youtube.com",
+            "category": "test"
+        }
+    ]
+}
