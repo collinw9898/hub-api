@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
+
 	// Allows the use of sqlite3
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -48,6 +50,36 @@ func getTasks(w http.ResponseWriter, r *http.Request) {
 
 	// Return the slice as JSON
 	json.NewEncoder(w).Encode(allTasks)
+}
+
+func getTask(w http.ResponseWriter, r *http.Request) {
+	// Connect to the db
+	db, err := sql.Open("sqlite3", "./data.db")
+	checkErr(err)
+	defer db.Close()
+
+	// Query to get the specific task
+	params := mux.Vars(r)
+	statement, err := db.Prepare("SELECT * FROM tasks WHERE id=" + params["id"])
+	checkErr(err)
+	res, err := statement.Query()
+	checkErr(err)
+
+	// Create new task from result of query
+	var id int
+	var text string
+	res.Next() // I should probably figure out why this is needed lol
+	res.Scan(&id, &text)
+
+	newTask := task{
+		ID:   id,
+		Text: text,
+	}
+
+	db.Close()
+
+	// Return new task as JSON
+	json.NewEncoder(w).Encode(newTask)
 }
 
 // Error handling for db interactions

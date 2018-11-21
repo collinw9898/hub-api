@@ -10,7 +10,7 @@ func NewRouter() *mux.Router {
 
 	// Todo routes
 	router.HandleFunc("/api/todo", getTasks).Methods("GET")
-	// router.HandleFunc("/api/todo/{id}").Methods("GET")
+	router.HandleFunc("/api/todo/{id}", getTask).Methods("GET")
 	// router.HandleFunc("/api/todo").Methods("POST")
 	// router.HandleFunc("/api/todo/{id}").Methods("PUT")
 	// router.HandleFunc("/api/todo/{id}").Methods("DELETE")
