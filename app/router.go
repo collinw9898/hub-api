@@ -17,5 +17,12 @@ func NewRouter() *mux.Router {
 	router.HandleFunc("/api/bookmarks/{id}", bookmarks.UpdateBookmark).Methods("PUT")
 	router.HandleFunc("/api/bookmarks/{id}", bookmarks.DeleteBookmark).Methods("DELETE")
 
+	// Todo routes
+	router.HandleFunc("/api/todo", getTasks).Methods("GET")
+	router.HandleFunc("/api/todo/{id}", bookmarks.GetBookmark).Methods("GET")
+	router.HandleFunc("/api/todo", bookmarks.CreateBookmark).Methods("POST")
+	router.HandleFunc("/api/todo/{id}", bookmarks.UpdateBookmark).Methods("PUT")
+	router.HandleFunc("/api/todo/{id}", bookmarks.DeleteBookmark).Methods("DELETE")
+
 	return router
 }
