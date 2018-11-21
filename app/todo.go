@@ -138,6 +138,13 @@ func deleteTask(w http.ResponseWriter, r *http.Request) {
 	checkErr(err)
 	defer db.Close()
 
+	// Delete the task
+	params := mux.Vars(r)
+	statement, insertErr := db.Prepare("DELETE FROM tasks WHERE id = ?")
+	checkErr(insertErr)
+	_, execErr := statement.Exec(params["id"])
+	checkErr(execErr)
+
 	db.Close()
 }
 
