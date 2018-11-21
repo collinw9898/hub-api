@@ -12,7 +12,7 @@ func NewRouter() *mux.Router {
 	router.HandleFunc("/api/todo", getTasks).Methods("GET")
 	router.HandleFunc("/api/todo/{id}", getTask).Methods("GET")
 	router.HandleFunc("/api/todo", createTask).Methods("POST")
-	// router.HandleFunc("/api/todo/{id}").Methods("PUT")
+	router.HandleFunc("/api/todo/{id}", updateTask).Methods("PUT")
 	// router.HandleFunc("/api/todo/{id}").Methods("DELETE")
 
 	return router

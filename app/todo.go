@@ -83,6 +83,7 @@ func getTask(w http.ResponseWriter, r *http.Request) {
 
 // Create a new task
 func createTask(w http.ResponseWriter, r *http.Request) {
+	// Parse the request body, create a new task
 	decoder := json.NewDecoder(r.Body)
 	var newTask task
 	decodeErr := decoder.Decode(&newTask)
@@ -93,6 +94,7 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 	checkErr(openErr)
 	defer db.Close()
 
+	// Insert the new task
 	statement, insertErr := db.Prepare("INSERT INTO tasks(text) VALUES(?)")
 	checkErr(insertErr)
 	_, execErr := statement.Exec(newTask.Text)
@@ -100,6 +102,32 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 
 	db.Close()
 
+	// Returns the new task
+	json.NewEncoder(w).Encode(newTask)
+}
+
+func updateTask(w http.ResponseWriter, r *http.Request) {
+	// Parse the request body, create a new task
+	decoder := json.NewDecoder(r.Body)
+	var newTask task
+	decodeErr := decoder.Decode(&newTask)
+	checkErr(decodeErr)
+
+	// Connect to the db
+	db, err := sql.Open("sqlite3", "./data.db")
+	checkErr(err)
+	defer db.Close()
+
+	// Update the task
+	params := mux.Vars(r)
+	statement, insertErr := db.Prepare("UPDATE tasks SET text = ? WHERE id = ?")
+	checkErr(insertErr)
+	_, execErr := statement.Exec(newTask.Text, params["id"])
+	checkErr(execErr)
+
+	db.Close()
+
+	// Return the updated task
 	json.NewEncoder(w).Encode(newTask)
 }
 
